@@ -1,0 +1,105 @@
+You are an expert full-stack developer. Build a web app called “GroupTrack (Web MVP)” that will later connect to a Chrome extension. Build the WEBSITE ONLY (no extension files yet).
+
+PRIMARY GOAL:
+GroupTrack helps students document contributions in academic group projects. It must allow:
+- Create and join group projects using secure project codes
+- Log tasks and track task status (Pending / In Progress / Completed)
+- Assign roles within the project (Leader, Researcher, Editor, Member)
+- Show contribution analytics (tasks per member, status distribution, project progress)
+- Export project report (CSV for MVP)
+- Store due dates now (notifications/reminders will be added later in the extension)
+
+ETHICS / PRIVACY:
+Privacy-first and non-intrusive.
+DO NOT track screens, browsing history, keystrokes, tabs, or any surveillance.
+ONLY store user-entered task logs and project data.
+
+AUTHENTICATION:
+Use Firebase Authentication with ONLY Anonymous Auth.
+Login page has one button: “Continue as Guest”.
+No email/password. No Google login. No personal data required.
+Optional: ask for nickname AFTER guest login (store in members doc).
+
+TECH STACK:
+- React + Vite (JavaScript)
+- Tailwind CSS
+- Firebase (Anonymous Auth + Cloud Firestore)
+- Must run in Replit + include local run commands.
+
+ROUTES:
+1) /login
+   - Button: Continue as Guest -> Firebase anonymous sign-in
+   - Optional nickname input (can be on next screen)
+   - Redirect to /dashboard
+
+2) /dashboard
+   - Create Project:
+     Project Name (required), Description (optional)
+     Generate joinCode “GT-XXXXX” (letters+numbers)
+     Save to Firestore
+     Add creator as member with role “Leader”
+     Show join code + Copy button
+     Button: Open Project -> /project/:projectId
+   - Join Project:
+     Input joinCode
+     Query Firestore for project where joinCode matches
+     If found: add user to members with role “Member” then go to project page
+     Else: show “Project not found”
+
+3) /project/:projectId
+   - Enforce access: only members can view
+   - Tabs: Tasks | Members & Roles | Analytics | Export
+
+TASKS TAB:
+- Add Task: title(required), details(optional), category(optional), status dropdown, dueAt(optional date)
+- Save under projects/{projectId}/tasks
+- Show task list
+- Update status allowed
+- Delete only if createdBy == current user
+
+MEMBERS & ROLES TAB:
+- List members from projects/{projectId}/members
+- Roles can be edited (ex. Leader, Researcher, Editor)
+- Only project creator can change roles
+
+ANALYTICS TAB (client-side):
+- total tasks
+- completed tasks
+- progress % (completed/total)
+- tasks per member (table OK)
+- status distribution counts
+
+EXPORT TAB:
+- Download CSV with columns:
+  projectName, taskTitle, status, category, createdBy, createdAt, dueAt
+- Show preview table
+
+FIRESTORE DATA MODEL:
+projects/{projectId}: name, description, createdBy, createdAt, joinCode, status, deadline(optional)
+projects/{projectId}/members/{uid}: displayName, role, joinedAt, isActive
+projects/{projectId}/tasks/{taskId}: title, details, category, status, createdBy, createdAt, updatedAt, dueAt
+
+SECURITY RULES:
+Provide Firestore rules so:
+- only authenticated users can read/write
+- only project members can access project data
+- members can create tasks
+- only task creator can delete task
+- only project creator can change roles and project settings
+
+DELIVERABLES:
+- Full codebase output file-by-file
+- src/firebase.js with config placeholders
+- README with Firebase setup steps and run commands
+- Firestore security rules text
+
+OUTPUT RULE:
+If generating everything at once is hard, generate in phases:
+Phase 1: Auth + routing + dashboard create/join
+Phase 2: Project page tasks CRUD
+Phase 3: Members/roles
+Phase 4: Analytics + Export CSV
+Phase 5: Security rules + README
+
+Now generate the complete codebase and instructions.
+
