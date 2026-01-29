@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isMember(projectId) {
+      return isAuthenticated() && exists(/databases/$(database)/documents/projects/$(projectId)/members/$(request.auth.uid));
+    }
+
+    function isLeader(projectId) {
+      // Check if user is a leader in the members subcollection
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/projects/$(projectId)/members/$(request.auth.uid)).data.role == 'leader';
+    }
+
+    // Projects Collection
+    match /projects/{projectId} {
+      // Create: Allow any auth user to create a project
+      allow create: if isAuthenticated();
+      
+      // Read: Allow if user is a member (or maybe allow reading just the doc to join? 
+      // Actually, to join, we query by joinCode. Query rules are tricky. 
+      // Simplified: Allow read if authenticated (to check join code) OR is member.
+      allow read: if isAuthenticated();
+
+      // Update: Only leader can update project settings
+      allow update: if isLeader(projectId);
+
+      // Members Subcollection
+      match /members/{memberId} {
+        // Read: Project members can read member list
+        allow read: if isMember(projectId) || (isAuthenticated() && request.auth.uid == memberId);
+        
+        // Write: 
+        // 1. User can add themselves (join)
+        // 2. Leader can update roles
+        allow write: if (request.auth.uid == memberId) || isLeader(projectId);
+      }
+
+      // Tasks Subcollection
+      match /tasks/{taskId} {
+        // Read: Project members can read tasks
+        allow read: if isMember(projectId);
+
+        // Create: Project members can create tasks
+        allow create: if isMember(projectId);
+
+        // Update: Project members can update status/details
+        allow update: if isMember(projectId);
+
+        // Delete: Only task creator can delete
+        allow delete: if isMember(projectId) && resource.data.createdBy == request.auth.uid;
+      }
+    }
+  }
+}
