@@ -1,0 +1,75 @@
+You are a senior full-stack engineer. Please scan my codebase and fix these issues in my GroupTask app. Use the existing project patterns (auth, DB, API routes, state management). Implement clean, minimal UI changes.
+
+A) OPTIONAL NICKNAME (NOT REQUIRED)
+1) Add an optional nickname/displayName field to the User model/schema (or equivalent store).
+2) Do NOT block login if nickname is missing.
+3) Provide a simple optional way to set/update nickname:
+   - Option 1: A “Complete Profile” banner/modal that appears after login with “Skip” and “Save” buttons.
+   - Option 2: A Profile page section where users can set nickname anytime.
+4) UI behavior:
+   - If nickname exists, show it.
+   - If nickname is empty/null, fall back to:
+     - email prefix (before @), or
+     - “User” + short id.
+5) Validation (soft validation, not strict): nickname 2–20 chars; trim spaces; prevent unsafe characters (basic allow list).
+
+Deliverables for A:
+- Migration/schema update
+- API endpoints to update nickname
+- UI component to edit nickname (optional prompt)
+- Ensure existing users continue to work
+
+B) ROLES EDITABLE VIA MANUAL INPUT (USER-TYPED)
+Goal: allow admins/owners to type custom role names (e.g., “Leader”, “Secretary”, “Checker”), not only preset roles.
+
+1) Implement role editing for project members:
+   - In the Members list, provide an editable input field for role name OR an “Edit Role” dialog.
+   - Admin/Owner can manually type a role label for each member.
+   - Save role label to DB (e.g., member.roleLabel or member.customRole).
+2) Important: Separate "role label" from "permissions":
+   - The typed role label is just a display label by default.
+   - Permissions should still use a safe RBAC system (Owner/Admin/Member/Viewer) to avoid security issues.
+   - If the project currently uses roles for permissions, refactor so:
+     - permissionsRole is one of: owner/admin/editor/viewer (or existing system)
+     - roleLabel is free text for display
+3) If you must allow custom permissions too:
+   - Implement a mapping table from custom role name -> allowed permissions,
+   - and restrict editing to Owner only.
+   - Provide safe defaults and prevent privilege escalation.
+
+Deliverables for B:
+- DB/schema changes for roleLabel (and permissionsRole if needed)
+- Backend endpoints to update role label for a member
+- Frontend UI for editing role label
+- RBAC enforcement: only admin/owner can edit other members
+- Prevent XSS: sanitize role label output
+- Ensure member list updates instantly (optimistic UI)
+
+C) OTHER BUGS TO FIX (FROM PREVIOUS REPORT)
+1) Categories: connect category to tasks/projects:
+   - Store category in DB
+   - Show category badges
+   - Add filter by category on dashboard/project view
+2) Share/invite code changes:
+   - Persist invite code in DB, stable across refresh
+   - Only change when user clicks “Regenerate”
+3) Project created not showing in dashboard:
+   - Return created project from API
+   - Update state optimistically or refetch list
+4) No alarms/reminders:
+   - Implement at least in-app reminders for due today/overdue tasks
+5) Performance:
+   - Speed up saving tasks and joining projects
+   - Use optimistic updates, reduce refetching, optimize queries/indexes
+   - Add request timing logs
+
+PROCESS
+- First identify stack: frontend framework and backend.
+- List root cause per issue briefly.
+- Implement fixes with file-by-file changes and short explanations.
+- Provide a QA checklist and steps to test.
+
+Constraints:
+- No paid services.
+- Use current DB/ORM migration method.
+- Keep UI simple and functional.

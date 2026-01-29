@@ -1,0 +1,116 @@
+ Scan my repository and implement fixes for the issues below using the existing project patterns. Do NOT guess—inspect the current code, Firestore structure, and query logic first.
+
+TECH CONTEXT (ASSUME FIREBASE)
+- Auth: Firebase Authentication
+- Data: Cloud Firestore
+- If Cloud Functions are already present, you may use them; if not, keep it client + rules.
+
+GOALS / BUGS TO FIX
+
+1) OPTIONAL NICKNAME (NOT REQUIRED)
+- Add an OPTIONAL field on user profile: users/{uid}.nickname (or displayName).
+- Do NOT block login or onboarding if nickname is missing.
+- Provide a simple UI way to set it:
+  - Option A: A small “Set a nickname?” modal/banner after login with [Skip] [Save]
+  - Option B: Profile page section to set/update nickname anytime
+- Display logic:
+  - If nickname exists → show nickname
+  - Else → fallback to email prefix or “User-XXXX” (last 4 chars of uid)
+- Validation (soft): 2–20 chars, trimmed, allow letters/numbers/space/underscore only.
+- Ensure it’s stored in Firestore, not only in UI state.
+
+2) ROLES EDITABLE BY MANUAL INPUT (CUSTOM ROLE LABEL)
+I want roles editable like the user can type their own role name (e.g., “Leader”, “Secretary”).
+IMPORTANT: Separate display role label from permissions to avoid security issues.
+
+- In membership docs, store:
+  - permissionsRole: one of ["owner","admin","editor","viewer"] (or existing permission role)
+  - roleLabel: FREE TEXT typed by admin/owner (e.g., "Secretary")
+- The typed roleLabel is only a label unless a permission mapping feature already exists.
+- Implement UI in Project Members list:
+  - For each member: show roleLabel with an edit icon or inline input
+  - Allow only owner/admin to edit roleLabel for members
+  - Save roleLabel to Firestore and update UI immediately (optimistic update)
+- Sanitize output to prevent XSS (render as plain text).
+- If current app uses role string for permissions, refactor so permissionsRole controls access checks; roleLabel is display only.
+
+3) CATEGORIES HAVE NO PURPOSE
+- Ensure category field is actually stored and used:
+  - tasks/{taskId}.category (string) and/or projects/{projectId}.category
+- Show category badge on task cards
+- Add filtering by category in dashboard/project task list
+- Optional: sorting/grouping by category
+
+4) SHAREABLE INVITE CODE CHANGES
+Invite/share codes must be stable and not regenerate on refresh.
+- Create Firestore structure:
+  - projects/{projectId} with inviteCode (string) and inviteCodeUpdatedAt
+  OR subcollection: projects/{projectId}/invites/default
+- The invite code should only be created once (on project creation or first time “Enable invite” is clicked)
+- Add “Regenerate code” button that explicitly generates a new code and persists it
+- Do NOT generate invite code in React render or page load without saving it.
+
+5) PROJECT CREATED BUT NOT SHOWING ON DASHBOARD
+Fix dashboard list logic and state update.
+- Ensure createProject writes to Firestore successfully AND UI updates.
+- Common fix:
+  - After creating project doc, also create membership doc: memberships/{projectId_uid}
+  - Update local state optimistically OR re-fetch the project list.
+- Dashboard query must include:
+  - Projects owned by user (ownerId == uid)
+  - AND projects where user is a member (membership exists)
+
+Recommended Firebase model for membership-based dashboard:
+- memberships collection:
+  - memberships/{projectId_uid} with { projectId, uid, permissionsRole, roleLabel, joinedAt }
+- Then dashboard loads memberships where uid==currentUser.uid, then loads projects by IDs (batch / IN query with chunking of 10 for Firestore).
+
+6) NO ALARMS / REMINDERS
+Implement at least in-app alarms (no paid services).
+- In-app reminders:
+  - Mark tasks as Overdue / Due Today in UI
+  - Add a bell/badge indicator
+- Store dueDate as Firestore Timestamp
+- Use user timezone from Intl.DateTimeFormat or store users/{uid}.timezone optionally.
+- Optional if Cloud Functions exist: scheduled email notifications (only if already configured).
+
+
+7) SLOW SAVING TASKS + SLOW JOINING PROJECT
+Optimize performance using Firebase best practices.
+Frontend:
+- Use optimistic UI updates for save/join
+- Avoid full re-fetch after every write
+- Use onSnapshot only where necessary; otherwise use getDocs with caching
+- Show progress states and disable buttons during in-flight requests
+Backend/Firestore:
+- Use batched writes where needed (e.g., join project: membership write + project memberCount update)
+- Use transactions for counters
+- Reduce reads by denormalizing small summary fields (e.g., projectName in membership doc)
+
+Also:
+- Add console timing logs around key operations: saveTask, joinProject, createProject, loadDashboard
+- Ensure Firestore indexes exist for queries (provide firebase index suggestions if needed)
+
+SECURITY RULES (MUST UPDATE)
+Update Firestore security rules to enforce:
+- Users can read/update their own user doc (nickname)
+- Only members can read project/tasks
+- Only owner/admin can edit roleLabel and permissionsRole for other users
+- Prevent privilege escalation: a user cannot set their own permissionsRole to admin/owner
+
+DELIVERABLES REQUIRED
+1) Brief root-cause summary for each issue based on the codebase
+2) File-by-file changes (which files, what changed)
+3) Firestore schema (collections + fields) reflecting changes
+4) Updated Firestore security rules
+5) Index recommendations (firebase indexes for membership queries & task filters)
+6) QA checklist with steps to test each fix
+7) Keep UI changes minimal but complete
+
+IMPLEMENTATION ORDER
+- First: invite code stability + dashboard missing project (critical)
+- Second: roles roleLabel editing + security rules
+- Third: categories + reminders + performance
+
+Start by scanning the codebase and describing the existing Firestore structure and query patterns before applying changes.
+
