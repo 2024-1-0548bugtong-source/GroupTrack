@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1000" viewBox="0 0 1400 1000" role="img" aria-label="GroupTrack Wireframe Design">
+  <defs>
+    <style>
+      .title { font: 700 34px Arial, sans-serif; fill: #111827; }
+      .panel { fill: #f9fafb; stroke: #1f2937; stroke-width: 2.2; rx: 14; }
+      .line { stroke: #9ca3af; stroke-width: 2; }
+      .text { font: 600 17px Arial, sans-serif; fill: #111827; }
+      .small { font: 500 14px Arial, sans-serif; fill: #4b5563; }
+      .btn { fill: #dbeafe; stroke: #1d4ed8; stroke-width: 1.8; rx: 10; }
+      .card { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.8; rx: 10; }
+      .chip { fill: #ecfeff; stroke: #0891b2; stroke-width: 1.6; rx: 8; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="1000" fill="#e5e7eb"/>
+  <text x="700" y="52" text-anchor="middle" class="title">GroupTrack Simple Wireframe</text>
+
+  <rect class="panel" x="40" y="90" width="420" height="860"/>
+  <text x="250" y="130" text-anchor="middle" class="text">1. Login Page</text>
+  <rect class="card" x="90" y="170" width="320" height="700"/>
+  <rect class="line" x="130" y="230" width="240" height="45"/>
+  <rect class="line" x="130" y="300" width="240" height="45"/>
+  <rect class="btn" x="130" y="380" width="240" height="50"/>
+  <rect class="btn" x="130" y="445" width="240" height="50"/>
+  <line x1="130" y1="530" x2="370" y2="530" class="line"/>
+  <text x="250" y="670" text-anchor="middle" class="small">Email and Password Inputs</text>
+  <text x="250" y="695" text-anchor="middle" class="small">Sign In, Sign Up, Reset Password</text>
+
+  <rect class="panel" x="490" y="90" width="420" height="860"/>
+  <text x="700" y="130" text-anchor="middle" class="text">2. Dashboard</text>
+  <rect class="btn" x="530" y="165" width="165" height="44"/>
+  <rect class="btn" x="715" y="165" width="165" height="44"/>
+  <rect class="card" x="530" y="240" width="350" height="160"/>
+  <rect class="card" x="530" y="420" width="350" height="160"/>
+  <rect class="card" x="530" y="600" width="350" height="160"/>
+  <text x="705" y="790" text-anchor="middle" class="small">Project cards with status</text>
+  <text x="705" y="815" text-anchor="middle" class="small">Create Project and Join Project actions</text>
+
+  <rect class="panel" x="940" y="90" width="420" height="860"/>
+  <text x="1150" y="130" text-anchor="middle" class="text">3. Project Page</text>
+  <rect class="chip" x="980" y="165" width="120" height="38"/>
+  <rect class="chip" x="1120" y="165" width="120" height="38"/>
+  <rect class="chip" x="1260" y="165" width="80" height="38"/>
+
+  <rect class="card" x="980" y="235" width="340" height="150"/>
+  <rect class="card" x="980" y="405" width="340" height="150"/>
+  <rect class="card" x="980" y="575" width="340" height="150"/>
+  <rect class="btn" x="980" y="745" width="160" height="46"/>
+  <rect class="btn" x="1160" y="745" width="160" height="46"/>
+  <text x="1150" y="825" text-anchor="middle" class="small">Tabs: Tasks, Members, Analytics</text>
+  <text x="1150" y="850" text-anchor="middle" class="small">Task cards and update actions</text>
+</svg>

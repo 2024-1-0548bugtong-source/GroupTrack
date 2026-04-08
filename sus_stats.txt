@@ -1,0 +1,21 @@
+Respondents=6
+Problem Means (1-5):
+Unequal participation occurs in group projects. = 0
+Tracking individual contributions is difficult. = 0
+Responsibilities are often unclear among members. = 0
+Group conflicts happen due to unclear task assignments. = 0
+It is difficult to prove individual contributions to instructors. = 0
+Existing tools are insufficient for tracking contributions. = 0
+Feature Utility Means (1-5):
+Task assignment tracking = 0
+Role-based membership = 0
+Deadline notifications = 3.67
+Project join codes = 0
+Progress dashboard = 0
+Contribution history = 0
+Overall Usability Mean (12 items, 1-5) = 0
+Most Important Feature Counts:
+ = 6
+Open-ended Likes:
+Open-ended Improvements:
+

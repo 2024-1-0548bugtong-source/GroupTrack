@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="GroupTrack System Flowchart">
+  <defs>
+    <style>
+      .title { font: 700 34px Arial, sans-serif; fill: #0f172a; }
+      .label { font: 600 18px Arial, sans-serif; fill: #0f172a; }
+      .small { font: 500 14px Arial, sans-serif; fill: #334155; }
+      .box { fill: #f8fafc; stroke: #0f172a; stroke-width: 2.2; rx: 14; }
+      .decision { fill: #fff7ed; stroke: #ea580c; stroke-width: 2.2; }
+      .line { stroke: #0f172a; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .yesno { font: 600 14px Arial, sans-serif; fill: #b45309; }
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L12,6 L0,12 z" fill="#0f172a" />
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="900" fill="#e2e8f0"/>
+  <text x="600" y="55" text-anchor="middle" class="title">GroupTrack System Flowchart</text>
+
+  <rect class="box" x="470" y="90" width="260" height="60" />
+  <text x="600" y="127" text-anchor="middle" class="label">Start</text>
+
+  <rect class="box" x="420" y="190" width="360" height="80" />
+  <text x="600" y="228" text-anchor="middle" class="label">User Login or Sign Up</text>
+  <text x="600" y="248" text-anchor="middle" class="small">Authentication with Firebase</text>
+
+  <polygon class="decision" points="600,320 760,400 600,480 440,400" />
+  <text x="600" y="395" text-anchor="middle" class="label" fill="#9a3412">Authenticated?</text>
+
+  <rect class="box" x="840" y="360" width="280" height="80" />
+  <text x="980" y="398" text-anchor="middle" class="label">Show Login Error</text>
+  <text x="980" y="418" text-anchor="middle" class="small">Retry credentials</text>
+
+  <rect class="box" x="420" y="530" width="360" height="80" />
+  <text x="600" y="568" text-anchor="middle" class="label">Open Dashboard</text>
+  <text x="600" y="588" text-anchor="middle" class="small">View projects and actions</text>
+
+  <polygon class="decision" points="600,650 760,730 600,810 440,730" />
+  <text x="600" y="725" text-anchor="middle" class="label" fill="#9a3412">Create or Join Project?</text>
+
+  <rect class="box" x="100" y="690" width="280" height="90" />
+  <text x="240" y="728" text-anchor="middle" class="label">Create Project</text>
+  <text x="240" y="748" text-anchor="middle" class="small">Generate join code</text>
+
+  <rect class="box" x="820" y="690" width="280" height="90" />
+  <text x="960" y="728" text-anchor="middle" class="label">Join Project</text>
+  <text x="960" y="748" text-anchor="middle" class="small">Enter valid code</text>
+
+  <rect class="box" x="420" y="840" width="360" height="50" />
+  <text x="600" y="872" text-anchor="middle" class="label">Manage Tasks, Members, Analytics</text>
+
+  <path class="line" d="M600 150 L600 188"/>
+  <path class="line" d="M600 270 L600 315"/>
+  <path class="line" d="M760 400 L838 400"/>
+  <text x="790" y="390" class="yesno">No</text>
+  <path class="line" d="M980 440 L980 500 L762 500"/>
+  <path class="line" d="M600 480 L600 528"/>
+  <text x="615" y="510" class="yesno">Yes</text>
+  <path class="line" d="M600 610 L600 645"/>
+  <path class="line" d="M440 730 L382 730"/>
+  <text x="385" y="720" class="yesno">Create</text>
+  <path class="line" d="M760 730 L818 730"/>
+  <text x="765" y="720" class="yesno">Join</text>
+  <path class="line" d="M240 780 L240 865 L418 865"/>
+  <path class="line" d="M960 780 L960 865 L782 865"/>
+</svg>

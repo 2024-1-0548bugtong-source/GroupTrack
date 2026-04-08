@@ -1,0 +1,41 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isProjectMember(projectId) {
+      return isAuthenticated() &&
+        firestore.exists(/databases/(default)/documents/projects/$(projectId)/members/$(request.auth.uid));
+    }
+
+    function isProjectLeader(projectId) {
+      return isProjectMember(projectId) &&
+        firestore.get(/databases/(default)/documents/projects/$(projectId)/members/$(request.auth.uid)).data.role == 'leader';
+    }
+
+    function isTaskAssignee(projectId, taskId) {
+      return isProjectMember(projectId) &&
+        firestore.get(/databases/(default)/documents/projects/$(projectId)/tasks/$(taskId)).data.assignedTo == request.auth.uid;
+    }
+
+    // Leader assignment files
+    match /projects/{projectId}/tasks/{taskId}/assignment/{fileName} {
+      allow read: if isProjectMember(projectId);
+      allow write: if isProjectLeader(projectId);
+    }
+
+    // Member submission files
+    match /projects/{projectId}/tasks/{taskId}/submission/{submitterUid}/{fileName} {
+      allow read: if isProjectMember(projectId);
+      allow write: if request.auth.uid == submitterUid && isTaskAssignee(projectId, taskId);
+    }
+
+    // Official approved snapshots (leader-only write)
+    match /projects/{projectId}/tasks/{taskId}/official/{approvalId}/{fileName} {
+      allow read: if isProjectMember(projectId);
+      allow write: if isProjectLeader(projectId);
+    }
+  }
+}

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GroupTrack Diagram Downloads</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: #111b31;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #22d3ee;
+      --accent2: #38bdf8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at top left, #182748, var(--bg) 55%);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .wrap {
+      width: min(920px, 100%);
+      background: linear-gradient(180deg, #15213c, var(--card));
+      border: 1px solid #24365f;
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+    }
+    h1 { margin: 0 0 8px; font-size: 30px; }
+    p { margin: 0 0 20px; color: var(--muted); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .item {
+      background: #0d172b;
+      border: 1px solid #223257;
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .item h2 { margin: 0 0 6px; font-size: 18px; }
+    .item small { color: var(--muted); display: block; margin-bottom: 12px; }
+    a {
+      display: inline-block;
+      text-decoration: none;
+      color: #022c22;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>GroupTrack Diagram Pack</h1>
+    <p>Download the diagram images individually or get the ZIP package.</p>
+
+    <section class="grid">
+      <article class="item">
+        <h2>System Flowchart</h2>
+        <small>Simple process flow from login to task management.</small>
+        <a href="system-flowchart.svg" download>Download SVG</a>
+      </article>
+
+      <article class="item">
+        <h2>Use Case Diagram</h2>
+        <small>User actions and interactions inside GroupTrack.</small>
+        <a href="use-case-diagram.svg" download>Download SVG</a>
+      </article>
+
+      <article class="item">
+        <h2>Wireframe Design</h2>
+        <small>Low-fidelity layout for Login, Dashboard, and Project pages.</small>
+        <a href="wireframe-design.svg" download>Download SVG</a>
+      </article>
+
+      <article class="item">
+        <h2>All Diagrams</h2>
+        <small>Single archive containing all images.</small>
+        <a href="grouptrack-diagrams.zip" download>Download ZIP</a>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
